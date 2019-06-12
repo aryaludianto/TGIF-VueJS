@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style/main.css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+ 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+    
+  <body>
+  <div class="main-content">
+
+    
+    <nav>
+      <div>
+      
+        <div id="headLog" class="row">
+          <div class="my-auto col-md-9">
+            <a href="./home-page.html">
+              <img class="img-circle" alt="Cinque Terre" width="100" height="100" src="./images/tgif_logo.jpg">
+            </a>
+          </div>
+          <div class="my-auto col-md-3 eml">
+            <a href = "mailto: info@tgif.net">
+              <img alt="email" width="20" height="20" src="./images/email-envelope-outline-shape-with-rounded-corners.svg"> 
+              <p>info@tgif.net</p>
+            </a>
+          </div>
+        </div>
+        
+        <nav id="navi" class="navbar navbar-inverse">
+          <ul id="navUl" class="nav navbar-nav">
+            <li><a href="./home-page.html">Home</a></li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Congress 113<span class="caret"></span></a>
+              <ul class="dropdown-menu" >
+                <li><a href="./house-data.html">House</a></li>
+                <li class="active"><a href="#">Senate</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Attendance<span class="caret"></span></a>
+              <ul class="dropdown-menu" >
+                <li><a href="./house-attendance.html">House</a></li>
+                <li><a href="./senate-attendance.html">Senate</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Party Loyalty<span class="caret"></span></a>
+              <ul class="dropdown-menu" >
+                <li><a href="./house-party-loyalty.html">House</a></li>
+                <li><a href="./senate-party-loyalty.html">Senate</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+      </div>
+    </nav>       
+    
+    <!-- Loader -->
+    <div id=loader class="loader"></div>
+
+    <!--Table container-->
+    <div id="container" class="container">
+      
+      <div class="row">
+        <h2 id="titl">Senators</h2>
+        <p class="exp col-md-8">First convened in 1789, the composition and powers of the Senate are established in Article One of the U.S. Constitution. Each state is represented by two senators, regardless of population, who serve staggered six-year terms. The Senate has several exclusive powers not granted to the House, including consenting to treaties as a precondition to their ratification and consenting to or confirming appointments of Cabinet secretaries, federal judges, other federal executive officials, military officers, regulatory officials, ambassadors, and other federal uniformed officers, as well as trial of federal officials impeached by the House.</p>
+      </div>
+
+      <div id="app">
+        <form class="row">
+            <div class="col-md-8 input-div">
+              <h5 class="col-md-3">Filter by Party: </h5>
+              <span class="col-md-2">
+                <label>
+                  <input id="checkRep" type="checkbox" value="R" @change="fillState(members)">
+                  Republican
+                </label>
+              </span>
+              <span class="col-md-2">
+                 <label>
+                  <input id="checkDem" type="checkbox" value="D" @change="fillState(members)">
+                  Democrat
+                 </label>
+              </span>
+              <span class="col-md-2">
+                <label>
+                  <input id="checkInd" type="checkbox" value="I" @change="fillState(members)">
+                  Independent
+                </label>
+              </span>
+            </div>
+
+            <div class="col-md-4 input-filter">
+              <h5 class="col-md-3">Filter by State</h5>
+              <select class="col-md-7" id="state"  @change="fillState(members)">
+                <option value="all" selected>All</option>
+                <option v-for="item in stateAbb" v-bind:value="item.abbreviation" > {{item.name}}  </option>
+              </select>
+            </div>
+
+          </form>  
+
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Party</th>
+                <th>State</th>
+                <th>Years in Office</th>
+                <th>Percentage of Votes</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr v-for="(value,key) in display">
+                <td> <a target="_blank" v-bind:href="value.url">{{value.full_name}} </a> {{value.no_name}}</td>
+                <td>{{value.party}}</td>
+                <td>{{value.state_name}}</td>
+                <td>{{value.seniority_txt}}</td>
+                <td>{{value.votes_with_party_pct_txt}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+      </div>
+    <div id="footer" class="navbar navbar-inverse">
+      <h4> &#169; 2016 TGIF | All Rights Reserved</h4>
+    </div>
+    <script src="./data/congress-113.js"></script>
+    <script> $(document).ready(app.fetchData(senate))</script>
+  
+  </body>
+</html>
