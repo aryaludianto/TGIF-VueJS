@@ -246,9 +246,7 @@ const senate = "https://api.propublica.org/congress/v1/113/senate/members.json";
 const house = "https://api.propublica.org/congress/v1/113/house/members.json";
 
 
-
 // -------------------------VUE-INSTANCE------------------------------
-
 var app = new Vue({  
   el: '#app',  
   data: {    
@@ -405,11 +403,8 @@ var app = new Vue({
               });   
             
             },
-            test: function (){
-              console.log("test")
-            }
-          
 
+          
   }
 }); 
 
