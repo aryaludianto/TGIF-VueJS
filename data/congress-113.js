@@ -2,6 +2,10 @@
 
 let stateAbb = [
   {
+    "name": "All",
+    "abbreviation": "all"
+  },
+  {
       "name": "Alabama",
       "abbreviation": "AL"
   },
@@ -265,39 +269,9 @@ var app = new Vue({
       "members_often_vote_with_party":0,
       "members_missed_most_vote":0,
       "members_missed_least_vote":0
-    } , stateAbb
+    } ,stateAbb ,selectedState:"all", selectedParty:[]
   },
   methods:{
-    fillState : function (members) {
-      let selectedState = document.getElementById("state"),
-      data;
-    
-      if( selectedState.value === "all"){
-        data = members;
-      } else {
-       data = members.filter(data=> {
-       return data.state === selectedState.value
-      });
-    }
-     return this.fillParty(data);
-    },
-    fillParty : function (data) {
-      let rep = document.getElementById("checkRep"),
-        dem = document.getElementById("checkDem"),
-        ind = document.getElementById("checkInd"),
-        dataDisp, tempData=[], tempArr=[rep,dem,ind];
-      
-        if(!rep.checked && !dem.checked && !ind.checked || rep.checked && dem.checked && ind.checked){
-          dataDisp = data;
-        } else if (ind.checked || dem.checked || rep.checked) {
-          tempData = [];
-          data.filter(member => tempArr.forEach(arr => { if(arr.checked){
-          if (member.party === arr.value) tempData.push(member) }}));
-          dataDisp = tempData;
-        } 
-        if (dataDisp.length === 0) dataDisp = [{no_name:"All data are filtered"}]
-       return this.display = dataDisp;
-    },
     statFill: function (member) {
         let party = { 
           democrats: [],
@@ -312,8 +286,7 @@ var app = new Vue({
             else party.independents.push(data)
           })
         }
-    
-    
+
         function votesWithParty (part){
           let result = !party[part][0] ? 0 : (party[part].map(dem => dem["votes_with_party_pct"]).reduce((prev, next) => prev + next)/party[part].length)
           return Math.round(result*100)/100  ;
@@ -380,13 +353,12 @@ var app = new Vue({
            loader: function () {
             let loader = document.getElementById("loader"),
                 container = document.getElementById("container");
-          
                 loader.setAttribute("class", "active");
                 container.setAttribute("class", "active")
           },
            fetchData: function (dataURL) {
-            let URL = dataURL;
-            fetch(URL, { method:'GET',
+            
+            fetch(dataURL, { method:'GET',
                                headers: { 'X-API-Key' : 'yDopPricaMTxYJvgYSF3d1dah1k2TlgaijneYq1G' }})
               .then(response => {
                 if(response.ok){ 
@@ -394,17 +366,35 @@ var app = new Vue({
                 } else throw new Error(response.statusText)
               }).then(data => {
                   this.members = data.results[0].members
-                  this.display = this.nameVal(app.members)
+                  this.display = this.nameVal(this.members)
                   this.statFill(this.members);
+                  this.filterData;
                   this.loader();
-            
+          
               }).catch(error =>  {
                 console.log('ERROR: ' + error.message)
               });   
-            
-            },
+            }
+  },
+  computed: {
+    filterData : function () {
+      let data, tempData=[];
+    
+      if(this.selectedState === "all") data = this.members;
+      else data = this.members.filter(data=> data.state === this.selectedState);
 
-          
+      if (this.selectedParty.length === 0 ) tempData = data
+      else this.selectedParty.map(party=>{
+        data.filter(member=> {
+          if (member.party === party) tempData.push(member) 
+        }) 
+      })
+
+     if (tempData.length === 0) tempData = [{no_name:"All data are filtered"}]
+
+     return this.display = tempData;
+    }
+    
   }
 }); 
 

@@ -81,19 +81,19 @@
               <h5 class="col-md-3">Filter by Party: </h5>
               <span class="col-md-2">
                 <label>
-                  <input id="checkRep" type="checkbox" value="R" @change="fillState(members)">
+                  <input id="checkRep" type="checkbox" value="R" @change="filterData" v-model="selectedParty">
                   Republican
                 </label>
               </span>
               <span class="col-md-2">
                  <label>
-                  <input id="checkDem" type="checkbox" value="D" @change="fillState(members)">
+                  <input id="checkDem" type="checkbox" value="D" @change="filterData" v-model="selectedParty">
                   Democrat
                  </label>
               </span>
               <span class="col-md-2">
                 <label>
-                  <input id="checkInd" type="checkbox" value="I" @change="fillState(members)">
+                  <input id="checkInd" type="checkbox" value="I" @change="filterData" v-model="selectedParty">
                   Independent
                 </label>
               </span>
@@ -102,10 +102,11 @@
 
             <div class="col-md-4 input-filter">
               <h5 class="col-md-3">Filter by State</h5>
-              <select class="col-md-7" id="state"  @change="fillState(members)">
-                <option value="all" selected>All</option>
+              <select class="col-md-7" id="state" @change="filterData" v-model="selectedState">
                 <option v-for="item in stateAbb" v-bind:value="item.abbreviation" > {{item.name}}  </option>
               </select>
+
+              <span>selected states value: {{selectedState}} {{ selectedParty }}</span>
             </div>
           
 
@@ -139,7 +140,6 @@
     <div id="footer" class="navbar navbar-inverse">
       <h4> &#169; 2016 TGIF | All Rights Reserved</h4>
     </div>   
-    
     
     <script src="./data/congress-113.js"></script>
     <script> $(document).ready(app.fetchData(house))</script>
