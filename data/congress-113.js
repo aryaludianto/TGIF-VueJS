@@ -254,7 +254,6 @@ const house = "https://api.propublica.org/congress/v1/113/house/members.json";
 var app = new Vue({  
   el: '#app',  
   data: {    
-    display:{},
     members:{},
     statistics:{
       "number_of_democrats": 0,
@@ -366,9 +365,9 @@ var app = new Vue({
                 } else throw new Error(response.statusText)
               }).then(data => {
                   this.members = data.results[0].members
-                  this.display = this.nameVal(this.members)
+                  this.filteredMembers = this.nameVal(this.members)
                   this.statFill(this.members);
-                  this.filterData;
+                  //this.filterData;
                   this.loader();
           
               }).catch(error =>  {
@@ -380,19 +379,12 @@ var app = new Vue({
     filterData : function () {
       let data, tempData=[];
     
-      if(this.selectedState === "all") data = this.members;
-      else data = this.members.filter(data=> data.state === this.selectedState);
+      data = this.selectedState === "all" ? this.members : this.members.filter(data=> data.state === this.selectedState);
+      this.selectedParty.length === 0 ? tempData = data : this.selectedParty.map(party=> data.filter(member=> {if(member.party === party) tempData.push(member)}))
 
-      if (this.selectedParty.length === 0 ) tempData = data
-      else this.selectedParty.map(party=>{
-        data.filter(member=> {
-          if (member.party === party) tempData.push(member) 
-        }) 
-      })
+      tempData.length === 0 ? tempData = [{no_name:"All data are filtered"}] :  tempData;
 
-     if (tempData.length === 0) tempData = [{no_name:"All data are filtered"}]
-
-     return this.display = tempData;
+     return tempData;
     }
     
   }

@@ -77,19 +77,19 @@
               <h5 class="col-md-3">Filter by Party: </h5>
               <span class="col-md-2">
                 <label>
-                  <input id="checkRep" type="checkbox" value="R" @change="fillState(members)">
+                  <input id="checkRep" type="checkbox" value="R" v-model="selectedParty">
                   Republican
                 </label>
               </span>
               <span class="col-md-2">
                  <label>
-                  <input id="checkDem" type="checkbox" value="D" @change="fillState(members)">
+                  <input id="checkDem" type="checkbox" value="D" v-model="selectedParty">
                   Democrat
                  </label>
               </span>
               <span class="col-md-2">
                 <label>
-                  <input id="checkInd" type="checkbox" value="I" @change="fillState(members)">
+                  <input id="checkInd" type="checkbox" value="I" v-model="selectedParty">
                   Independent
                 </label>
               </span>
@@ -97,8 +97,7 @@
 
             <div class="col-md-4 input-filter">
               <h5 class="col-md-3">Filter by State</h5>
-              <select class="col-md-7" id="state"  @change="fillState(members)">
-                <option value="all" selected>All</option>
+              <select class="col-md-7" id="state" v-model="selectedState">
                 <option v-for="item in stateAbb" v-bind:value="item.abbreviation" > {{item.name}}  </option>
               </select>
             </div>
@@ -117,7 +116,7 @@
               </tr>
             </thead>
             <tbody >
-              <tr v-for="(value,key) in display">
+              <tr v-for="(value,key) in filterData">
                 <td> <a target="_blank" v-bind:href="value.url">{{value.full_name}} </a> {{value.no_name}}</td>
                 <td>{{value.party}}</td>
                 <td>{{value.state_name}}</td>
