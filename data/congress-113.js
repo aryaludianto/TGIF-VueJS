@@ -365,9 +365,8 @@ var app = new Vue({
                 } else throw new Error(response.statusText)
               }).then(data => {
                   this.members = data.results[0].members
-                  this.filteredMembers = this.nameVal(this.members)
                   this.statFill(this.members);
-                  //this.filterData;
+                  this.nameVal(this.members);
                   this.loader();
           
               }).catch(error =>  {
